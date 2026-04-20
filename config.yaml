@@ -1,0 +1,23 @@
+name: "Home Assistant Stream Deck YAML"
+description: "Control Home Assistant via Elgato Stream Deck using YAML configuration"
+version: "1.0.0"
+slug: "ha_streamdeck_yaml"
+arch:
+  - aarch64
+startup: application
+boot: auto
+host_network: true
+protected: false
+full_access: true
+devices:
+  - /dev/hidraw0
+map:
+  - config:rw
+options:
+  hass_token: ""
+  websocket_protocol: "ws"
+  streamdeck_config: "/config/streamdeck_yaml/configuration.yaml"
+schema:
+  hass_token: str
+  websocket_protocol: list(ws|wss)
+  streamdeck_config: str
