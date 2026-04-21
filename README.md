@@ -1,3 +1,9 @@
+> **This is a fork of [basnijholt/home-assistant-streamdeck-yaml](https://github.com/basnijholt/home-assistant-streamdeck-yaml).**
+> This fork adds native support for running the app as a **local Home Assistant add-on** on **Home Assistant Green** (aarch64, Alpine Linux).
+> See the [Home Assistant Green installation](#house_with_garden-installation-on-home-assistant-green-new) section below for setup instructions.
+
+---
+
 <img src="https://user-images.githubusercontent.com/6897215/225175629-28f80bfb-3b0a-44ac-8b52-b719953958d7.png" align="right" style="width: 300px;" />
 
 <h1 align="center">Home Assistant on Stream Deck</h1>
@@ -13,6 +19,7 @@ With this Python script, you can control your Home Assistant instance via a Stre
 - ✅ Easy to use
 - 🛠️ Highly customizable
 - 🧩 [Home Assistant Add-on support](https://github.com/basnijholt/home-assistant-streamdeck-yaml-addon)
+- 🟢 **[Home Assistant Green local add-on support](#house_with_garden-installation-on-home-assistant-green-new)** *(this fork)*
 - 🐧 Supports Linux, MacOS, and Windows
 - 📁 YAML configuration
 - 🏠 Runs from same machine as Home Assistant
@@ -78,6 +85,73 @@ I truly appreciate your support!
 ## :rocket: Getting Started
 
 Follow the steps below to get up and running with Home Assistant on Stream Deck.
+
+### :house_with_garden: Installation on Home Assistant Green (NEW)
+
+> **This section covers the changes introduced in this fork.**
+> Tested on: Home Assistant Green (aarch64), HA OS 6.12.77-haos, Alpine Linux 3.23.3, Stream Deck MK.2.
+
+The upstream project requires a separate machine or Docker to run the Stream Deck bridge. This fork packages everything as a **local HA Supervisor add-on** that runs directly on the HA Green box — no extra hardware needed.
+
+#### What changed from the upstream project
+
+| Area | Upstream | This fork |
+|------|----------|-----------|
+| Base image | `mambaorg/micromamba` (Debian/conda) | `alpine:3.23` (plain pip) |
+| Entrypoint | `.env` file | `/data/options.json` via HA Supervisor |
+| HID access | Manual Docker flags | `devices: [/dev/hidraw0]` in addon manifest |
+| Init system | s6-overlay (via HA base image) | None (plain process, avoids PID-1 conflict) |
+| Install method | Docker / standalone script | Local HA add-on (Supervisor managed) |
+
+#### Prerequisites
+
+- Home Assistant Green (or any aarch64 HA OS install)
+- Elgato Stream Deck connected via USB
+- SSH access to the HA box (install the **SSH & Web Terminal** add-on)
+
+#### Installation steps
+
+1. **Copy this repo to your HA box** (run from your local machine):
+
+   ```bash
+   scp -r /path/to/home-assistant-streamdeck-yaml homeassistant:/addons/streamdeck_yaml
+   ```
+
+   Or clone it directly on the HA box:
+
+   ```bash
+   git clone https://github.com/tlahitte/home-assistant-streamdeck-yaml /addons/streamdeck_yaml
+   ```
+
+2. **Create the config directory** (SSH into HA box):
+
+   ```bash
+   sudo mkdir -p /config/streamdeck_yaml
+   cp /addons/streamdeck_yaml/configuration.yaml /config/streamdeck_yaml/configuration.yaml
+   ```
+
+3. **Install the local add-on** in the HA UI:
+   - Settings → Add-ons → Add-on Store → three-dot menu → **Check for updates**
+   - Scroll to **Local add-ons** → click **Home Assistant Stream Deck YAML** → **Install**
+
+4. **Configure the add-on** (Configuration tab):
+   - `hass_token`: a long-lived access token (create one in your HA profile)
+   - `websocket_protocol`: `ws`
+   - `streamdeck_config`: `/config/streamdeck_yaml/configuration.yaml`
+
+5. **Start the add-on** and check the Log tab. You should see:
+   ```
+   [INFO] Starting Home Assistant Stream Deck YAML
+   Found 15 keys, Connected to Home Assistant
+   ```
+
+#### Important notes
+
+- `protected: false` is set by default in this fork (required for USB/HID access).
+- After any change to `config.yaml`, always click **Check for updates** in the Add-on Store before rebuilding — the Supervisor caches the manifest separately from the Docker image.
+- The `configuration.yaml` lives at `/config/streamdeck_yaml/configuration.yaml` on the HA box. Edit it there; changes are picked up automatically when `auto_reload: true` is set.
+
+---
 
 ### :house_with_garden: Installation as Home Assistant Add-on
 
