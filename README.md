@@ -120,7 +120,7 @@ The upstream project requires a separate machine or Docker to run the Stream Dec
    Or clone it directly on the HA box:
 
    ```bash
-   git clone https://github.com/tlahitte/home-assistant-streamdeck-yaml /addons/streamdeck_yaml
+   git clone https://github.com/tlahitte/home-assistant-green-streamdeck-yaml /addons/streamdeck_yaml
    ```
 
 2. **Create the config directory** (SSH into HA box):
