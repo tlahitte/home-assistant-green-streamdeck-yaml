@@ -1,0 +1,95 @@
+# Row 1 - Lights
+- entity_id: light.led_bulb_t2_gu10_cct
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
+  text: |
+    Aqara
+    LR 01
+
+- entity_id: light.led_bulb_t2_gu10_cct_2
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
+  text: |
+    Aqara
+    LR 02
+
+- entity_id: light.wled_s3matrix01
+  service: light.toggle
+  icon_mdi: led-strip
+  icon_background_color: "#2E1C00"
+  text: |
+    WLED
+    TV
+
+- entity_id: light.wled_bar02
+  service: light.toggle
+  icon_mdi: led-strip
+  icon_background_color: "#2E1C00"
+  text: |
+    WLED
+    Bar
+
+- entity_id: light.smartplug_03
+  service: light.toggle
+  icon_mdi: led-strip
+  icon_background_color: "#2E1C00"
+  text: |
+    LED
+    Bar
+
+# Row 2 - Floor lamp + switches
+- entity_id: light.smartplug_desk
+  service: light.toggle
+  icon_mdi: floor-lamp
+  icon_background_color: "#2E1C00"
+  text: |
+    Floor
+    Lamp
+
+- entity_id: switch.wifi_smart_switch_switch_1_2
+  service: switch.toggle
+  icon_mdi: toggle-switch
+  icon_background_color: "#001829"
+  text: |
+    Salon
+    Left
+
+- entity_id: switch.wifi_smart_switch_switch_2_2
+  service: switch.toggle
+  icon_mdi: toggle-switch
+  icon_background_color: "#001829"
+  text: |
+    Salon
+    Right
+
+- entity_id: switch.tasmota
+  service: switch.toggle
+  icon_mdi: power-socket
+  icon_background_color: "#001829"
+  text: SmartPlug
+
+- special_type: empty
+
+# Row 3 - Media + navigation
+- entity_id: media_player.playstation_5
+  service: media_player.toggle
+  icon_mdi: gamepad-variant
+  text: PS5
+
+- entity_id: media_player.tv_samsung_q70_series_55
+  service: media_player.toggle
+  icon_mdi: television
+  text: |
+    Samsung
+    TV
+
+- entity_id: media_player.salon
+  service: media_player.toggle
+  icon_mdi: speaker
+  text: Salon
+
+- special_type: previous-page
+
+- special_type: next-page

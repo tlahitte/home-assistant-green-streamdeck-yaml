@@ -1,0 +1,57 @@
+# Row 1 - Lights
+- entity_id: light.smart_multicolor_bulb
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
+  text: |
+    Tapo
+    Bdrm 01
+
+- entity_id: light.smart_multicolor_bulb_2
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
+  text: |
+    Tapo
+    Bdrm 02
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+# Row 2 - Media + automation
+- entity_id: media_player.bedroom_display
+  service: media_player.toggle
+  icon_mdi: cast
+  text: |
+    Bedroom
+    Display
+
+- icon_mdi: lightning-bolt
+  icon_background_color: "#002010"
+  icon_mdi_color: "#FFFFFF"
+  service: automation.trigger
+  target:
+    entity_id: automation.new_automation
+  text: |
+    Bedroom
+    Switch
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+# Row 3 - Navigation
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: previous-page
+
+- special_type: next-page

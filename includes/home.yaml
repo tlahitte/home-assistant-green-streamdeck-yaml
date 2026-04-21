@@ -1,106 +1,109 @@
-- entity_id: light.living_room_lights
-  text: |
-    Living room
-    lights
-  special_type: light-control
-  long_press:
-    service: light.toggle
-  special_type_data:
-    colors:
-      - "#81ADFF"  # from default HA options
-      - "#D797FF"  # from default HA options
-      - "#FF9FF2"  # from default HA options
-      - "#0000FF"  # blue
-      - "#FF0000"  # red
-    color_temp_kelvin:
-      - 2000  # from default HA options
-      - 3521  # from default HA options
-      - 5025  # from default HA options
-      - 6535  # from default HA options
-    brightnesses:
-      - 0
-      - 10
-      - 50
-      - 100
-- special_type: go-to-page
-  special_type_data: all-lights
-  text: |
-    All
-    lights
-- entity_id: light.dinner_area
+# Row 1 - Living room lights
+- entity_id: light.led_bulb_t2_gu10_cct
   service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
   text: |
-    Dinner
-    lights
-  long_press:
-    special_type: light-control
-    special_type_data:
-      colors:
-        - "#81ADFF"  # from default HA options
-        - "#D797FF"  # from default HA options
-        - "#FF9FF2"  # from default HA options
-        - "#FF7056"  # from default HA options
-        - "#0000FF"  # blue
-        - "#FF0000"  # red
-      color_temp_kelvin:
-        - 2000  # from default HA options
-        - 3521  # from default HA options
-        - 5025  # from default HA options
-        - 6535  # from default HA options
-- icon: url:https://files.nijho.lt/bas.jpg
-  entity_id: person.bas
+    Aqara
+    LR 01
+
+- entity_id: light.led_bulb_t2_gu10_cct_2
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
   text: |
-    {{ "" if is_state("person.bas", "home") else "Not" }}
-    Home
-  special_type: go-to-page
-  special_type_data: bas
+    Aqara
+    LR 02
+
+- entity_id: light.wled_s3matrix01
+  service: light.toggle
+  icon_mdi: led-strip
+  icon_background_color: "#2E1C00"
+  text: |
+    WLED
+    TV
+
+- entity_id: light.wled_bar02
+  service: light.toggle
+  icon_mdi: led-strip
+  icon_background_color: "#2E1C00"
+  text: |
+    WLED
+    Bar
+
+- entity_id: light.smartplug_03
+  service: light.toggle
+  icon_mdi: led-strip
+  icon_background_color: "#2E1C00"
+  text: |
+    LED
+    Bar
+
+# Row 2 - Bedroom lights + people
+- entity_id: light.smartplug_desk
+  service: light.toggle
+  icon_mdi: floor-lamp
+  icon_background_color: "#2E1C00"
+  text: |
+    Floor
+    Lamp
+
+- entity_id: light.smart_multicolor_bulb
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
+  text: |
+    Bedroom
+    01
+
+- entity_id: light.smart_multicolor_bulb_2
+  service: light.toggle
+  icon_mdi: lightbulb
+  icon_background_color: "#2E1C00"
+  text: |
+    Bedroom
+    02
+
+- entity_id: person.tlahitte
+  icon_mdi: account
+  text: |
+    {{ "Tommy" }}
+    {{ "Home" if is_state("person.tlahitte", "home") else "Away" }}
   text_color: >
-    {{ "green" if is_state("person.bas", "home") else "red" }}
-  text_size: 16
-- icon: url:https://files.nijho.lt/m.jpg
-  entity_id: person.marcella
+    {{ "green" if is_state("person.tlahitte", "home") else "red" }}
+  text_size: 11
+
+- entity_id: person.annabelle
+  icon_mdi: account
   text: |
-    {{ "" if is_state("person.marcella", "home") else "Not" }}
-    Home
+    {{ "Annabelle" }}
+    {{ "Home" if is_state("person.annabelle", "home") else "Away" }}
   text_color: >
-    {{ "green" if is_state("person.marcella", "home") else "red" }}
-  text_size: 16
-- entity_id: media_player.kef_ls50
-  service: media_player.volume_set
-  service_data:
-    volume_level: '{{ (state_attr("media_player.kef_ls50", "volume_level") - 0.05) | max(0) }}'
-    entity_id: media_player.kef_ls50
-  text: '{{ (100 * state_attr("media_player.kef_ls50", "volume_level")) | int }}%'
-  text_size: 16
-  icon_mdi: "volume-minus"
-- entity_id: media_player.kef_ls50
-  service: media_player.volume_set
-  service_data:
-    volume_level: '{{ (state_attr("media_player.kef_ls50", "volume_level") + 0.05) | min(1) }}'
-    entity_id: media_player.kef_ls50
-  text: '{{ (100 * state_attr("media_player.kef_ls50", "volume_level")) | int }}%'
-  text_size: 16
-  icon_mdi: volume-plus
-- service: script.reset_adaptive_lighting
-  text: |
-    Reset
-    adaptive
-    lighting
-- icon: night_sky.png
-  service: script.turn_off_everything
+    {{ "green" if is_state("person.annabelle", "home") else "red" }}
+  text_size: 11
+
+# Row 3 - ALL OFF + navigation
+- icon_mdi: power
+  icon_background_color: "#E53935"
+  icon_mdi_color: "#FFFFFF"
+  service: light.turn_off
+  target:
+    entity_id:
+      - light.led_bulb_t2_gu10_cct
+      - light.led_bulb_t2_gu10_cct_2
+      - light.smart_multicolor_bulb
+      - light.smart_multicolor_bulb_2
+      - light.smartplug_03
+      - light.smartplug_desk
+      - light.wled_bar02
+      - light.wled_s3matrix01
   text: ALL OFF
-- entity_id: input_select.sleep_mode
-  service: input_select.select_previous
-  text: Sleep {{ states("input_select.sleep_mode") }}
-  icon_mdi: power-sleep
-- icon: fireplace.png
-  service: script.start_fireplace_netflix
-- service_data:
-    id: playlist:37i9dQZF1DXaRycgyh6kXP
-    source: KEF LS50
-  icon: spotify.png
-  service: script.start_spotify
-- icon: hogwarts.png
-  service: script.start_hogwarts_legacy
+  text_color: "#FFFFFF"
+
+- special_type: empty
+
+- special_type: empty
+
 - special_type: previous-page
+
 - special_type: next-page

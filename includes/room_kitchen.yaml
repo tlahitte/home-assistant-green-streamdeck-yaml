@@ -1,0 +1,47 @@
+# Row 1 - Switches
+- entity_id: switch.wifi_smart_switch_switch_1
+  service: switch.toggle
+  icon_mdi: toggle-switch
+  icon_background_color: "#001829"
+  text: |
+    Kitchen
+    Left
+
+- entity_id: switch.wifi_smart_switch_switch_2
+  service: switch.toggle
+  icon_mdi: toggle-switch
+  icon_background_color: "#001829"
+  text: |
+    Kitchen
+    Right
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+# Row 2 - Media
+- entity_id: media_player.kitchen
+  service: media_player.toggle
+  icon_mdi: speaker
+  text: Kitchen
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+# Row 3 - Navigation
+- special_type: empty
+
+- special_type: empty
+
+- special_type: empty
+
+- special_type: previous-page
+
+- special_type: next-page
