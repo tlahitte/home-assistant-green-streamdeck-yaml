@@ -8,6 +8,7 @@ interface Preferences {
 interface Room {
   name: string;
   icon: string;
+  domain: "light" | "switch";
   entities: string[];
 }
 
@@ -15,6 +16,7 @@ const ROOMS: Room[] = [
   {
     name: "Living Room",
     icon: "🛋️",
+    domain: "light",
     entities: [
       "light.led_bulb_t2_gu10_cct",
       "light.led_bulb_t2_gu10_cct_2",
@@ -27,14 +29,25 @@ const ROOMS: Room[] = [
   {
     name: "Bedroom",
     icon: "🛏️",
+    domain: "light",
     entities: [
       "light.smart_multicolor_bulb",
       "light.smart_multicolor_bulb_2",
     ],
   },
   {
+    name: "Kitchen",
+    icon: "🍳",
+    domain: "switch",
+    entities: [
+      "switch.wifi_smart_switch_switch_1",
+      "switch.wifi_smart_switch_switch_2",
+    ],
+  },
+  {
     name: "All Rooms",
     icon: "🏠",
+    domain: "light",
     entities: [
       "light.led_bulb_t2_gu10_cct",
       "light.led_bulb_t2_gu10_cct_2",
@@ -48,12 +61,13 @@ const ROOMS: Room[] = [
   },
 ];
 
-async function callLightService(
+async function callService(
+  domain: "light" | "switch",
   action: "turn_on" | "turn_off",
   entities: string[],
   prefs: Preferences,
 ): Promise<void> {
-  const res = await fetch(`${prefs.haUrl}/api/services/light/${action}`, {
+  const res = await fetch(`${prefs.haUrl}/api/services/${domain}/${action}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${prefs.haToken}`,
@@ -74,7 +88,7 @@ function RoomItem({ room }: { room: Room }) {
       title: `Turning ${room.name} ${label}…`,
     });
     try {
-      await callLightService(action, room.entities, prefs);
+      await callService(room.domain, action, room.entities, prefs);
       toast.style = Toast.Style.Success;
       toast.title = `${room.name} ${label}`;
     } catch (err) {
@@ -104,7 +118,7 @@ function RoomItem({ room }: { room: Room }) {
 
 export default function Command() {
   return (
-    <List navigationTitle="Room Lights">
+    <List navigationTitle="Room Controls">
       {ROOMS.map((room) => (
         <RoomItem key={room.name} room={room} />
       ))}
