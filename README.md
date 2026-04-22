@@ -153,6 +153,53 @@ The upstream project requires a separate machine or Docker to run the Stream Dec
 
 ---
 
+### :mag: Raycast Extension (macOS)
+
+Control your room lights directly from [Raycast](https://www.raycast.com) on your Mac — no Stream Deck required.
+The extension lives in the `raycast-extension/` directory of this repo and uses the HA REST API over your local network.
+
+#### Prerequisites
+
+- Raycast installed on your Mac
+- Your Mac and HA Green on the same local network
+- A Home Assistant [long-lived access token](https://www.home-assistant.io/docs/authentication/#your-account-profile) (HA Profile → Long-Lived Access Tokens)
+- Node.js 18+ (`node --version`)
+
+#### Installation
+
+```bash
+cd raycast-extension
+npm install
+npm run dev
+```
+
+`npm run dev` launches Raycast in development mode and loads the extension. Raycast will prompt you to enter your credentials the first time a command runs.
+
+#### Preferences (set once in Raycast)
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| **Home Assistant URL** | Base URL of your HA instance | `http://homeassistant.local:8123` |
+| **Long-Lived Access Token** | Token from HA Profile (stored in macOS Keychain) | `eyJ…` |
+
+> **Security note:** the token is stored by Raycast in the macOS Keychain — it is never written to disk or committed to git.
+
+#### Usage
+
+1. Open Raycast (`⌘ Space`)
+2. Type **"Control Room Lights"**
+3. Select a room and press **Enter** to turn on, or **⌘ T** to turn off
+
+| Room | Lights controlled |
+|------|-------------------|
+| Living Room | Aqara ×2, WLED TV, WLED Bar, LED Bar, Floor Lamp |
+| Bedroom | Tapo bulbs ×2 |
+| All Rooms | All 8 lights above |
+
+> Kitchen is not listed — it has no `light.*` entities (only wall switches).
+
+---
+
 ### :house_with_garden: Installation as Home Assistant Add-on
 
 <details>

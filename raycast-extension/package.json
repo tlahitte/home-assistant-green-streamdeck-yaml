@@ -1,0 +1,46 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "home-assistant-room-lights",
+  "title": "Home Assistant Room Lights",
+  "description": "Turn room lights on or off via Home Assistant REST API",
+  "author": "tlahitte",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "control-lights",
+      "title": "Control Room Lights",
+      "description": "Turn on or off lights by room",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "haUrl",
+      "title": "Home Assistant URL",
+      "description": "URL of your Home Assistant instance, e.g. http://homeassistant.local:8123",
+      "type": "textfield",
+      "required": true,
+      "default": "http://homeassistant.local:8123"
+    },
+    {
+      "name": "haToken",
+      "title": "Long-Lived Access Token",
+      "description": "Create one at HA Profile → Long-Lived Access Tokens",
+      "type": "password",
+      "required": true
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.0.0",
+    "@raycast/utils": "^1.0.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^1.0.0",
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "lint": "ray lint"
+  }
+}
