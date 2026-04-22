@@ -61,9 +61,23 @@ const ROOMS: Room[] = [
   },
 ];
 
+interface HAState {
+  entity_id: string;
+  state: string;
+}
+
+async function isAnyOn(entities: string[], prefs: Preferences): Promise<boolean> {
+  const res = await fetch(`${prefs.haUrl}/api/states`, {
+    headers: { Authorization: `Bearer ${prefs.haToken}` },
+  });
+  if (!res.ok) throw new Error(`HA returned ${res.status}: ${res.statusText}`);
+  const states = (await res.json()) as HAState[];
+  return states.some((s) => entities.includes(s.entity_id) && s.state === "on");
+}
+
 async function callService(
   domain: "light" | "switch",
-  action: "toggle" | "turn_on" | "turn_off",
+  action: "turn_on" | "turn_off",
   entities: string[],
   prefs: Preferences,
 ): Promise<void> {
@@ -81,20 +95,28 @@ async function callService(
 function RoomItem({ room }: { room: Room }) {
   const prefs = getPreferenceValues<Preferences>();
 
-  async function handleAction(action: "toggle" | "turn_on" | "turn_off") {
-    const labels: Record<typeof action, string> = {
-      toggle: "toggled",
-      turn_on: "on",
-      turn_off: "off",
-    };
-    const toast = await showToast({
-      style: Toast.Style.Animated,
-      title: `${room.name}…`,
-    });
+  async function handleToggle() {
+    const toast = await showToast({ style: Toast.Style.Animated, title: `${room.name}…` });
+    try {
+      const anyOn = await isAnyOn(room.entities, prefs);
+      const action = anyOn ? "turn_off" : "turn_on";
+      await callService(room.domain, action, room.entities, prefs);
+      toast.style = Toast.Style.Success;
+      toast.title = `${room.name} ${anyOn ? "off" : "on"}`;
+    } catch (err) {
+      toast.style = Toast.Style.Failure;
+      toast.title = "Failed";
+      toast.message = err instanceof Error ? err.message : String(err);
+    }
+  }
+
+  async function handleExplicit(action: "turn_on" | "turn_off") {
+    const label = action === "turn_on" ? "on" : "off";
+    const toast = await showToast({ style: Toast.Style.Animated, title: `${room.name}…` });
     try {
       await callService(room.domain, action, room.entities, prefs);
       toast.style = Toast.Style.Success;
-      toast.title = `${room.name} ${labels[action]}`;
+      toast.title = `${room.name} ${label}`;
     } catch (err) {
       toast.style = Toast.Style.Failure;
       toast.title = "Failed";
@@ -108,16 +130,16 @@ function RoomItem({ room }: { room: Room }) {
       icon={room.icon}
       actions={
         <ActionPanel>
-          <Action title="Toggle" onAction={() => handleAction("toggle")} />
+          <Action title="Toggle" onAction={handleToggle} />
           <Action
             title="Turn On"
             shortcut={{ modifiers: ["cmd"], key: "o" }}
-            onAction={() => handleAction("turn_on")}
+            onAction={() => handleExplicit("turn_on")}
           />
           <Action
             title="Turn Off"
             shortcut={{ modifiers: ["cmd"], key: "t" }}
-            onAction={() => handleAction("turn_off")}
+            onAction={() => handleExplicit("turn_off")}
           />
         </ActionPanel>
       }
